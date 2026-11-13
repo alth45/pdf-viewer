@@ -1,0 +1,129 @@
+# ============================================================
+# Dependencies
+# ============================================================
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/install-state.gz
+.yarn/unplugged
+
+# ============================================================
+# Build output
+# ============================================================
+dist/
+dist-ssr/
+build/
+out/
+*.tsbuildinfo
+
+# ============================================================
+# Vite cache
+# ============================================================
+.vite/
+node_modules/.vite/
+
+# ============================================================
+# Environment variables
+# ============================================================
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# ============================================================
+# IDE / Editor
+# ============================================================
+# VS Code — keep workspace settings & recommended extensions
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# JetBrains (WebStorm, IntelliJ)
+.idea/
+*.iml
+*.iws
+out/
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+\#*\#
+.\#*
+
+# ============================================================
+# OS files
+# ============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============================================================
+# Logs
+# ============================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================================================
+# Testing & coverage
+# ============================================================
+coverage/
+.nyc_output/
+*.lcov
+.cypress/
+playwright-report/
+test-results/
+
+# ============================================================
+# Linter / formatter cache
+# ============================================================
+.eslintcache
+.stylelintcache
+.prettiercache
+.tsc-cache/
+
+# ============================================================
+# Cache & temp
+# ============================================================
+.cache/
+.temp/
+.tmp/
+tmp/
+*.tmp
+*.bak
+
+# ============================================================
+# Deployment / tooling
+# ============================================================
+.vercel
+.netlify
+.firebase/
+.vercelignore
+.firebaserc
+
+# ============================================================
+# Misc
+# ============================================================
+*.tgz
+*.tar.gz
+
+# ============================================================
+# Exceptions — file yang HARUS di-commit
+# ============================================================
+# package-lock.json / yarn.lock / pnpm-lock.yaml
+# (JANGAN di-ignore — wajib untuk reproducible builds)

@@ -1,0 +1,935 @@
+/* TEXT LAYER */
+.text-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 3;
+  line-height: 1;
+  opacity: 1;
+}
+.text-layer span {
+  position: absolute;
+  white-space: pre;
+  color: transparent;
+  transform-origin: 0 0;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.text-layer ::selection {
+  background: rgba(59, 130, 246, 0.35);
+}
+
+/* SEARCH LAYER */
+.search-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.search-hit {
+  position: absolute;
+  background: rgba(255, 213, 79, 0.55);
+  border-radius: 2px;
+  mix-blend-mode: multiply;
+}
+.search-hit.current {
+  background: rgba(255, 140, 0, 0.75);
+  outline: 1px solid #ff8c00;
+}
+
+/* ANNOTATION LAYER */
+.anno-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+}
+.anno-item {
+  pointer-events: none;
+  cursor: pointer;
+  position: absolute;
+}
+#pages[data-tool="select"] .anno-item,
+#pages[data-tool="eraser"] .anno-item {
+  pointer-events: auto;
+}
+.anno-item.selected {
+  outline: 1.5px dashed #3b82f6;
+  outline-offset: 1px;
+}
+.anno-rect {
+  border-radius: 2px;
+}
+.anno-underline,
+.anno-strike {
+  position: absolute;
+  border-radius: 1px;
+}
+.anno-text {
+  position: absolute;
+  white-space: pre-wrap;
+  line-height: 1.25;
+  word-break: break-word;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.anno-note {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #ffd54f;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  border: 1px solid #c9a227;
+}
+.anno-img {
+  position: absolute;
+  object-fit: contain;
+}
+.anno-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.anno-svg path {
+  pointer-events: stroke;
+  cursor: pointer;
+}
+#pages:not([data-tool="select"]):not([data-tool="eraser"]) .anno-svg path {
+  pointer-events: none;
+}
+.anno-ghost {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 2px;
+}
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  right: -5px;
+  bottom: -5px;
+  background: #3b82f6;
+  border: 1.5px solid #fff;
+  border-radius: 2px;
+  cursor: nwse-resize;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* NOTE POPUP */
+.note-popup {
+  position: absolute;
+  z-index: 30;
+  width: 230px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+.note-popup textarea {
+  width: 100%;
+  height: 90px;
+  resize: vertical;
+  border-radius: 6px;
+  padding: 6px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+.note-popup .np-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* TEXT EDITOR */
+.text-editor {
+  position: absolute;
+  z-index: 30;
+  min-width: 120px;
+  min-height: 1.4em;
+  background: rgba(255, 255, 255, 0.92);
+  color: #000;
+  border: 1.5px solid #3b82f6;
+  border-radius: 3px;
+  padding: 1px 3px;
+  resize: both;
+  overflow: hidden;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.25;
+}
+
+/* FORM LAYER */
+.form-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.form-field {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.7);
+  border-radius: 2px;
+  color: #111;
+  padding: 1px 3px;
+  font-size: 12px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.form-field:focus {
+  outline: 2px solid var(--accent);
+  background: #fff;
+}
+.form-field[type="checkbox"],
+.form-field[type="radio"] {
+  padding: 0;
+  accent-color: #3b82f6;
+}
+select.form-field {
+  background: #fff;
+}
+
+/* THUMBS */
+#thumbGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.thumb {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff;
+  border: 2px solid transparent;
+  aspect-ratio: 0.72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.thumb.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(244, 166, 35, 0.3);
+}
+.thumb .thumb-num {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 10px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.thumb .thumb-skel {
+  font-size: 10px;
+  color: #999;
+}
+
+/* SEARCH PANEL */
+.search-box {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  border-radius: 6px;
+  padding: 0 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+.search-box input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.search-opt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-bottom: 8px;
+}
+#searchCount {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-bottom: 6px;
+}
+.result-item {
+  padding: 7px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.result-item:hover {
+  background: var(--hover);
+}
+.result-item.active {
+  background: var(--bg-elev);
+  border-color: var(--accent);
+}
+.result-page {
+  font-size: 10px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.result-snippet mark {
+  background: #ffd54f;
+  color: #000;
+  border-radius: 2px;
+}
+
+/* OUTLINE */
+.outline-item {
+  padding: 6px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.outline-item:hover {
+  background: var(--hover);
+}
+.outline-item .ol-page {
+  color: var(--fg-muted);
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+/* ANNOTATION LIST */
+.anno-item-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 7px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.anno-item-row:hover {
+  background: var(--hover);
+}
+.anno-item-row .sw {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+  margin-top: 3px;
+}
+.anno-item-row .meta {
+  font-size: 10px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+.empty-hint {
+  color: var(--fg-muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 24px 8px;
+  line-height: 1.5;
+}
+
+/* MODAL */
+#modalRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+}
+#modalRoot.active {
+  display: flex;
+}
+.modal {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  min-width: 340px;
+  max-width: 92vw;
+  max-height: 88vh;
+  overflow: auto;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  color: var(--fg);
+}
+.modal h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+.modal .row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.modal input[type="text"],
+.modal input[type="password"],
+.modal input[type="number"] {
+  flex: 1;
+  height: 34px;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+.modal input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.modal .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+.btn {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 7px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font-weight: 600;
+}
+.btn:hover {
+  background: var(--hover);
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+.btn.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.modal .tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.modal .tabs button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 7px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 12px;
+}
+.modal .tabs button.active {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+#sigCanvas {
+  background: #fff;
+  border-radius: 8px;
+  cursor: crosshair;
+  touch-action: none;
+  display: block;
+  width: 100%;
+}
+.sig-tab {
+  display: none;
+}
+.sig-tab.active {
+  display: block;
+}
+
+/* TOASTS */
+#toastWrap {
+  position: fixed;
+  left: 50%;
+  bottom: 78px;
+  transform: translateX(-50%);
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--fg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  animation: toastIn 0.2s ease;
+  max-width: 80vw;
+}
+.toast.error {
+  border-left-color: var(--danger);
+}
+.toast.ok {
+  border-left-color: var(--ok);
+}
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Form fields interactivity follows current tool.
+   Saat tool bukan "select", biarkan pointer event tembus ke halaman
+   agar anotasi bisa digambar di atas form field. */
+#pages:not([data-tool="select"]) .form-field {
+  pointer-events: none;
+}
+
+/* ============================================================
+   PRINT
+   #printContainer diisi <img> per halaman oleh printService.
+   Print CSS menyembunyikan seluruh UI dan hanya menampilkan
+   container tersebut.
+   ============================================================ */
+#printContainer {
+  display: none;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  body > *:not(#printContainer) {
+    display: none !important;
+  }
+
+  #printContainer {
+    display: block !important;
+  }
+
+  #printContainer img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  #printContainer img:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}
+
+@page {
+  margin: 5mm;
+  size: auto;
+}
+
+/* ============================================================
+   PRESENTATION MODE (fullscreen)
+   ============================================================ */
+#btnExitPresentation {
+  position: fixed;
+  right: 16px;
+  bottom: 56px;
+  z-index: 56;
+  width: 32px;
+  height: 32px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-toolbar);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--fg);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: background 0.12s;
+}
+#btnExitPresentation svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#btnExitPresentation:hover {
+  background: var(--hover);
+}
+
+html.presentation-mode #btnExitPresentation {
+  display: flex;
+}
+
+html.presentation-mode #topbar,
+html.presentation-mode #sidebar,
+html.presentation-mode #toolbar {
+  display: none !important;
+}
+
+html.presentation-mode #viewer {
+  scrollbar-width: none;
+}
+html.presentation-mode #viewer::-webkit-scrollbar {
+  display: none;
+}
+
+html.presentation-mode #pages {
+  padding: 16px 16px 48px;
+  gap: 8px;
+}
+
+html.presentation-mode #pageBadge {
+  bottom: 20px;
+}
+
+/* ============================================================
+   READING MODE (Normal / Sepia / Invert / Dark)
+   Filter hanya di canvas — anotasi tetap berwarna normal.
+   ============================================================ */
+
+/* --- Filter canvas per mode --- */
+html[data-reading="invert"] .page-canvas {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html[data-reading="sepia"] .page-canvas {
+  filter: sepia(0.85) contrast(0.95) brightness(1.02);
+}
+
+html[data-reading="dark"] .page-canvas {
+  filter: invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.92);
+}
+
+/* --- Highlight dengan mix-blend-mode: multiply jadi invisible
+       di background gelap. Ubah ke screen untuk mode gelap. --- */
+html[data-reading="invert"] .anno-item.anno-rect,
+html[data-reading="dark"] .anno-item.anno-rect {
+  mix-blend-mode: screen !important;
+}
+
+html[data-reading="invert"] .search-hit,
+html[data-reading="dark"] .search-hit {
+  mix-blend-mode: screen !important;
+  background: rgba(255, 220, 0, 0.65) !important;
+}
+
+/* --- Viewer background lebih gelap saat invert/dark --- */
+html[data-reading="invert"] {
+  --bg-viewer: #1c1c1c;
+}
+html[data-reading="dark"] {
+  --bg-viewer: #050505;
+}
+
+/* --- Beri border tipis di halaman saat mode gelap agar jelas terlihat --- */
+html[data-reading="invert"] .page-container,
+html[data-reading="dark"] .page-container {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    var(--page-shadow);
+}
+
+/* ============================================================
+   READING MODE MENU (popover)
+   ============================================================ */
+.reading-mode-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.reading-mode-menu {
+  z-index: 100;
+  min-width: 150px;
+  padding: 4px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  display: none;
+}
+
+.reading-mode-menu.active {
+  display: block;
+}
+
+.reading-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--fg);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reading-menu-item:hover {
+  background: var(--hover);
+}
+
+.reading-menu-item.active {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.reading-menu-item svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+
+/* Sembunyikan menu di print */
+@media print {
+  .reading-mode-wrap {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   MERGE MODAL
+   ============================================================ */
+.merge-picker {
+  margin-bottom: 8px;
+}
+
+.merge-drop {
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: 12px;
+  margin-bottom: 10px;
+  transition: all 0.15s;
+}
+
+.merge-drop.drag-over {
+  border-color: var(--accent);
+  background: rgba(244, 166, 35, 0.08);
+  color: var(--accent);
+}
+
+.merge-list {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.merge-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: var(--bg-panel);
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.merge-idx {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.merge-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.merge-size {
+  flex: none;
+  color: var(--fg-muted);
+  font-size: 11px;
+}
+
+.merge-actions {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+
+.merge-actions button {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--fg-muted);
+}
+
+.merge-actions button:hover:not(:disabled) {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.merge-actions button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.merge-actions .merge-remove:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ============================================================
+   OCR MODAL
+   ============================================================ */
+.ocr-controls {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.ocr-controls .btn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.ocr-pages-list {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+  margin-bottom: 10px;
+  background: var(--bg-panel);
+}
+
+.ocr-page-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.ocr-page-row:hover {
+  background: var(--hover);
+}
+
+.ocr-page-num {
+  flex: none;
+  font-weight: 600;
+  min-width: 52px;
+}
+
+.ocr-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.ocr-badge-scan {
+  background: rgba(244, 166, 35, 0.15);
+  color: var(--accent);
+}
+
+.ocr-badge-sparse {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.ocr-badge-text {
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--ok);
+}
+
+.ocr-lang-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.ocr-lang-row select {
+  flex: 1;
+  height: 32px;
+  border-radius: 6px;
+  padding: 0 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+
+.ocr-note {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(244, 166, 35, 0.08);
+  border-left: 3px solid var(--accent);
+}
